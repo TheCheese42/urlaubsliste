@@ -1,0 +1,17 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+    <file>icons/edit-3.png</file>
+    <file>icons/edit.png</file>
+    <file>icons/file-plus.png</file>
+    <file>icons/folder.png</file>
+    <file>icons/layers.png</file>
+    <file>icons/plus.png</file>
+    <file>icons/power.png</file>
+    <file>icons/printer.png</file>
+    <file>icons/redo.png</file>
+    <file>icons/refresh-cw.png</file>
+    <file>icons/save.png</file>
+    <file>icons/settings.png</file>
+    <file>icons/undo.png</file>
+</qresource>
+</RCC>
