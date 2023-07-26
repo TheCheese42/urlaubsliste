@@ -1,5 +1,5 @@
 from reportlab.lib.pagesizes import A4
-from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_CENTER
 from reportlab.lib.colors import black
 from reportlab.platypus import (
@@ -34,7 +34,14 @@ def create_report(list_, file):
         raise ValueError("List is empty")
     table_data = []
     # Set first row
-    table_data.append(list_.categories)
+    headerstyle = ParagraphStyle(
+        "Tableheader",
+        fontName='Helvetica-Bold',
+        fontSize=14,
+    )
+    table_data.append(
+        [Paragraph(i, style=headerstyle) for i in list_.categories]
+    )
     longest_category_length = 0
     for category in list_.categories:
         category_length = list_.get_amount_of_items_for_category(

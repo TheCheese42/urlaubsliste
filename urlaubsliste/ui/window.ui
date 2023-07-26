@@ -24,8 +24,12 @@
        <font>
         <family>Calibri</family>
         <pointsize>20</pointsize>
+        <weight>75</weight>
         <bold>true</bold>
        </font>
+      </property>
+      <property name="autoFillBackground">
+       <bool>true</bool>
       </property>
       <property name="text">
        <string>Listentitel</string>
@@ -62,10 +66,10 @@
        <bool>true</bool>
       </property>
       <property name="autoFillBackground">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="styleSheet">
-       <string notr="true">background:transparent</string>
+       <string notr="true"/>
       </property>
       <property name="sizeAdjustPolicy">
        <enum>QAbstractScrollArea::AdjustToContents</enum>
@@ -88,6 +92,9 @@
       <property name="showGrid">
        <bool>true</bool>
       </property>
+      <property name="gridStyle">
+       <enum>Qt::SolidLine</enum>
+      </property>
       <attribute name="horizontalHeaderCascadingSectionResizes">
        <bool>true</bool>
       </attribute>
@@ -104,7 +111,7 @@
      <x>0</x>
      <y>0</y>
      <width>1110</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuDatei">

@@ -19,8 +19,11 @@
      <property name="contextMenuPolicy">
       <enum>Qt::CustomContextMenu</enum>
      </property>
+     <property name="autoFillBackground">
+      <bool>true</bool>
+     </property>
      <property name="styleSheet">
-      <string notr="true">background:transparent</string>
+      <string notr="true"/>
      </property>
      <property name="dragDropMode">
       <enum>QAbstractItemView::InternalMove</enum>

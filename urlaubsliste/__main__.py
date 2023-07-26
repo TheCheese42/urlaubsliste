@@ -16,7 +16,7 @@ from PyQt5.QtWidgets import (
     QMessageBox,
     QHeaderView,
 )
-from PyQt5.QtGui import QFont, QIcon, QCloseEvent
+from PyQt5.QtGui import QFont, QIcon, QCloseEvent, QColor
 from PyQt5.uic import loadUi  # type: ignore (unresolved import, pylance)
 from PyQt5.QtCore import (
     Qt,
