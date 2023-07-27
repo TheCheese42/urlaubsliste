@@ -16,8 +16,8 @@ from PyQt5.QtWidgets import (
     QMessageBox,
     QHeaderView,
 )
-from PyQt5.QtGui import QFont, QIcon, QCloseEvent, QColor
-from PyQt5.uic import loadUi  # type: ignore (unresolved import, pylance)
+from PyQt5.QtGui import QFont, QIcon, QCloseEvent
+from PyQt5.uic import loadUi
 from PyQt5.QtCore import (
     Qt,
     QTranslator,
@@ -429,6 +429,28 @@ class PreviewDialog(QDialog):
         header.setSectionResizeMode(QHeaderView.Stretch)
 
 
+class ItemEditor(QDialog):
+    def __init__(self, parent, category: str):
+        super().__init__(parent)
+        self.category = category
+        loadUi(Path(__file__).parent / "ui/item_editor.ui", self)
+        self.setWindowTitle("Item Editor")
+        self.setWindowIcon(
+            QIcon(str(Path(__file__).parent / "icons/appicon.png"))
+        )
+        self.items = self.parent().parent().list.orm.structure.categories[
+            self.category
+        ]
+        self.refreshUi()
+
+    def refreshUi(self):
+        if self.parent().parent().list.categories:
+            self.list.clear()
+            for item in self.items:
+                list_item = QListWidgetItem(item)
+                self.list.addItem(list_item)
+
+
 class EditorDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -440,11 +462,43 @@ class EditorDialog(QDialog):
         self.createCategoryButton.clicked.connect(self.createCategory)
         self.list.itemChanged.connect(self.itemChanged)
         self.delCategoryButton.clicked.connect(self.deleteCategory)
+        self.openItemEditorButton.clicked.connect(self.openItemEditor)
         self.renames = {}
         self.originalNames = {}
         self.categories = self.parent().list.categories
         self.new_category_counter = 1
         self.refreshUi()
+
+    def openItemEditor(self):
+        selected = self.list.selectedItems()
+        try:
+            category = selected[0].text()
+        except IndexError:
+            error_box = QErrorMessage(self)
+            error_box.showMessage(
+                "Bitte wähle zuerst eine Liste aus."
+            )
+            return
+        if category not in self.parent().list.categories:
+            error_box = QErrorMessage(self)
+            error_box.showMessage(
+                "Die Kategorie ist leer."
+            )
+            return
+        if not self.parent().list.orm.structure.categories[category]:
+            error_box = QErrorMessage(self)
+            error_box.showMessage(
+                "Die Kategorie ist leer."
+            )
+            return
+        dialog = ItemEditor(self, category)
+        if dialog.exec():
+            dialog_list_items = [
+                dialog.list.item(x).text() for x in range(dialog.list.count())
+            ]
+            self.parent().list.orm.structure.categories[
+                category
+            ] = dialog_list_items
 
     def refreshUi(self):
         if self.parent().list.categories:
