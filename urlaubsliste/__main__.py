@@ -159,7 +159,8 @@ class Window(QMainWindow, Ui_MainWindow):
         tempfile = NamedTemporaryFile("wb", suffix=".pdf", delete=False)
         try:
             create_report(
-                List(self.list.get_raw_extended_with_parent()), tempfile
+                List(self.list.get_raw_extended_with_parent()),
+                tempfile,
             )
         except ValueError:
             error_box = QErrorMessage(self)
@@ -357,7 +358,10 @@ class PreviewDialog(QDialog):
     def print(self):
         tempfile = NamedTemporaryFile("wb", suffix=".pdf", delete=False)
         try:
-            create_report(self.list, tempfile)
+            create_report(
+                self.list,
+                tempfile,
+            )
         except ValueError:
             error_box = QErrorMessage(self)
             error_box.showMessage(

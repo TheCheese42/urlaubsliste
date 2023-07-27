@@ -1,4 +1,4 @@
-from reportlab.lib.pagesizes import A4
+from reportlab.lib.pagesizes import A4, landscape
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_CENTER
 from reportlab.lib.colors import black
@@ -37,7 +37,7 @@ def create_report(list_, file):
     headerstyle = ParagraphStyle(
         "Tableheader",
         fontName='Helvetica-Bold',
-        fontSize=14,
+        fontSize=12,
     )
     table_data.append(
         [Paragraph(i, style=headerstyle) for i in list_.categories]
@@ -49,14 +49,19 @@ def create_report(list_, file):
         )
         if category_length > longest_category_length:
             longest_category_length = category_length
+    normalstyle = ParagraphStyle(
+        "Tablecontent",
+        fontName='Helvetica',
+        fontSize=10,
+    )
     for i in range(longest_category_length):
         values = []
         for category in list_.categories:
             content = list_.get_items_for_category(category)
             try:
-                value = Paragraph(content[i])
+                value = Paragraph(content[i], style=normalstyle)
             except IndexError:
-                value = Paragraph("")
+                value = Paragraph("", style=normalstyle)
             values.append(value)
         table_data.append(values)
 
@@ -78,10 +83,10 @@ def create_report(list_, file):
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),  # V-Align
         ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),  # Table font
         ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),  # Header font
-        ('FONTSIZE', (0, 0), (-1, -1), 12),  # Table font size
-        ('FONTSIZE', (0, 0), (-1, 0), 14),  # Header font size
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 6),  # Table bottom padding
-        ('BOTTOMPADDING', (0, 0), (-1, 0), 9),  # Header bottom padding
+        ('FONTSIZE', (0, 0), (-1, -1), 10),  # Table font size
+        ('FONTSIZE', (0, 0), (-1, 0), 12),  # Header font size
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 4),  # Table bottom padding
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 6),  # Header bottom padding
         ('GRID', (0, 0), (-1, -1), 1, black),  # Visible grid
         ('WORDWRAP', (0, 0), (-1, -1), True),  # Enable textwrap
     ])
