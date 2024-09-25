@@ -14,4 +14,4 @@ python -m pip install -r dev-requirements.txt
 powershell build.ps1
 ```
 
-Der build Prozess dauert häufig sehr lange (bis zu 10 Minuten).
+Der build Prozess dauert häufig lange (bis zu 20 Minuten).
