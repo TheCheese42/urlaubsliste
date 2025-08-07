@@ -29,11 +29,10 @@ jobs:
       - name: Install Dependencies
         run: |
           sudo apt update
-          sudo apt install -y pyqt5-dev-tools qtchooser qttools5-dev-tools
           sudo apt install -y patchelf ccache
           python -m venv .venv
           source .venv/bin/activate
-          pip install -r requirements.txt -r dev-requirements.txt
+          pip install -r requirements.txt -r dev-requirements.txt PySide6
       
       - name: Compile Resources
         run: |
