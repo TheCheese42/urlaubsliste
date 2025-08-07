@@ -3,29 +3,22 @@ requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "UT-DR-Save-Manager"
-version = "1.1.2"
+name = "Urlaubsliste"
+version = "1.3.0"
 authors = [{ name = "Dominik Reinartz", email = "dominik.reinartz@proton.me" }]
-description = "Graphical Save File Manager for Undertale and Deltarune."
+description = "Program zum Verwalten hierarchischer Listen."
 readme = "README.md"
-requires-python = ">=3.12"
-keywords = ["undertale", "deltarune", "save-manager", "pyqt6", "gui"]
-license = { text = "MIT" }
+requires-python = ">=3.9"
+keywords = ["listenverwaltung", "gui"]
+license = { text = "GPLv3" }
 dependencies = [
     "PyQt6>=6.9.1",
-    "psutil>=7.0.0",
+    "reportlab>=4.4.3",
     "pyqt-utils @ git+https://github.com/TheCheese42/pyqt-utils.git",
 ]
 
 [project.optional-dependencies]
-dev = [
-    "qt6-tools>=6.5.0.1.3",
-    "nuitka>=2.7.10",
-    "flake8>=7.3.0",
-    "mypy>=1.16.1",
-    "isort>=6.0.1",
-    "pyqt-utils[dev-tools] @ git+https://github.com/TheCheese42/pyqt-utils.git",
-]
+dev = ["nuitka>=2.7.12", "isort>=6.0.1", "flake8>=7.3.0"]
 
 [project.scripts]
 urlaubsliste = "urlaubsliste.__main__:main"

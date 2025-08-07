@@ -2,3 +2,5 @@
 __main__.build/
 __main__.dist/
 __pycache__/
+urlaubsliste/ui/*.py
+urlaubsliste/icons/*.py

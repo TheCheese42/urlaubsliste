@@ -111,7 +111,7 @@
      <x>0</x>
      <y>0</y>
      <width>1110</width>
-     <height>21</height>
+     <height>30</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuDatei">
@@ -149,9 +149,17 @@
     <addaction name="actionVorschau"/>
     <addaction name="actionDrucken"/>
    </widget>
+   <widget class="QMenu" name="menuHilfe">
+    <property name="title">
+     <string>Über</string>
+    </property>
+    <addaction name="action_ber_Urlaubsliste"/>
+    <addaction name="actionLizenzen"/>
+   </widget>
    <addaction name="menuDatei"/>
    <addaction name="menuAktionen"/>
    <addaction name="menuAnsicht"/>
+   <addaction name="menuHilfe"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBar">
@@ -182,7 +190,7 @@
   </widget>
   <action name="actionNeueUrlaubsliste">
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset>
      <normaloff>:/icons/file-plus.png</normaloff>:/icons/file-plus.png</iconset>
    </property>
    <property name="text">
@@ -197,7 +205,7 @@
   </action>
   <action name="actionBasisListenVerwalten">
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset>
      <normaloff>:/icons/settings.png</normaloff>:/icons/settings.png</iconset>
    </property>
    <property name="text">
@@ -206,7 +214,7 @@
   </action>
   <action name="actionOffnen">
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset>
      <normaloff>:/icons/folder.png</normaloff>:/icons/folder.png</iconset>
    </property>
    <property name="text">
@@ -218,7 +226,7 @@
   </action>
   <action name="actionBeenden">
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset>
      <normaloff>:/icons/power.png</normaloff>:/icons/power.png</iconset>
    </property>
    <property name="text">
@@ -227,7 +235,7 @@
   </action>
   <action name="actionListentitelAndern">
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset>
      <normaloff>:/icons/edit-3.png</normaloff>:/icons/edit-3.png</iconset>
    </property>
    <property name="text">
@@ -236,7 +244,7 @@
   </action>
   <action name="actionAnsichtNeuLaden">
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset>
      <normaloff>:/icons/refresh-cw.png</normaloff>:/icons/refresh-cw.png</iconset>
    </property>
    <property name="text">
@@ -248,7 +256,7 @@
   </action>
   <action name="actionEditorOffnen">
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset>
      <normaloff>:/icons/edit.png</normaloff>:/icons/edit.png</iconset>
    </property>
    <property name="text">
@@ -260,7 +268,7 @@
   </action>
   <action name="actionListeSpeichern">
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset>
      <normaloff>:/icons/save.png</normaloff>:/icons/save.png</iconset>
    </property>
    <property name="text">
@@ -275,7 +283,7 @@
   </action>
   <action name="actionListeSpeichernUnter">
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset>
      <normaloff>:/icons/save.png</normaloff>:/icons/save.png</iconset>
    </property>
    <property name="text">
@@ -290,7 +298,7 @@
   </action>
   <action name="actionVorschau">
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset>
      <normaloff>:/icons/layers.png</normaloff>:/icons/layers.png</iconset>
    </property>
    <property name="text">
@@ -302,7 +310,7 @@
   </action>
   <action name="actionDrucken">
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset>
      <normaloff>:/icons/printer.png</normaloff>:/icons/printer.png</iconset>
    </property>
    <property name="text">
@@ -317,7 +325,7 @@
   </action>
   <action name="actionUndo">
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset>
      <normaloff>:/icons/undo.png</normaloff>:/icons/undo.png</iconset>
    </property>
    <property name="text">
@@ -332,7 +340,7 @@
   </action>
   <action name="actionRedo">
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset>
      <normaloff>:/icons/redo.png</normaloff>:/icons/redo.png</iconset>
    </property>
    <property name="text">
@@ -345,9 +353,19 @@
     <string>Ctrl+Shift+Z</string>
    </property>
   </action>
+  <action name="action_ber_Urlaubsliste">
+   <property name="text">
+    <string>Über Urlaubsliste</string>
+   </property>
+  </action>
+  <action name="actionLizenzen">
+   <property name="text">
+    <string>Lizenzen</string>
+   </property>
+  </action>
  </widget>
  <resources>
-  <include location="../icons.qrc"/>
+  <include location="../icons/icons.qrc"/>
  </resources>
  <connections/>
 </ui>

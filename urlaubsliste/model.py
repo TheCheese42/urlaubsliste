@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 from typing import Optional
 
-from utils import deep_merge
+from .utils import deep_merge
 
 
 class List:

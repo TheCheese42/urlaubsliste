@@ -5,15 +5,25 @@ from copy import copy, deepcopy
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 
-from model import List
-from PyQt6.QtCore import QEvent, QLibraryInfo, QObject, Qt, QTimer, QTranslator
+from PyQt6.QtCore import QEvent, QObject, Qt, QTimer
 from PyQt6.QtGui import QCloseEvent, QFont, QIcon
 from PyQt6.QtWidgets import (QApplication, QDialog, QErrorMessage, QFileDialog,
                              QHeaderView, QListWidgetItem, QMainWindow,
                              QMessageBox, QTableWidgetItem)
 from PyQt6.uic import loadUi
-from utils import create_report
-from window_ui import Ui_MainWindow
+from pyqt_utils import init_app
+
+from .icons import resource as _  # noqa
+from .model import List
+from .ui.window_ui import Ui_MainWindow
+from .utils import create_report
+
+if True:
+    init_app("Urlaubsliste", __file__)
+
+from pyqt_utils import config
+from pyqt_utils import licenses
+from pyqt_utils.version import version_string
 
 REFRESHING_GOING_ON = False
 
@@ -24,7 +34,6 @@ class Window(QMainWindow, Ui_MainWindow):
         self.setWindowIcon(
             QIcon(str(Path(__file__).parent / "icons/appicon.png"))
         )
-        self.setWindowState(Qt.WindowMaximized)
         self.setupUi(self)
         self.connectSignalsSlots()
         self.actions_ = []
@@ -84,7 +93,7 @@ class Window(QMainWindow, Ui_MainWindow):
                 self.table.setItem(y, x, tItem)
 
         header = self.table.horizontalHeader()
-        header.setSectionResizeMode(QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
 
         REFRESHING_GOING_ON = False
 
@@ -114,8 +123,19 @@ class Window(QMainWindow, Ui_MainWindow):
         self.actionDrucken.triggered.connect(self.printList)
         self.actionUndo.triggered.connect(self.undo)
         self.actionRedo.triggered.connect(self.redo)
+        self.action_ber_Urlaubsliste.triggered.connect(self.about)
+        self.actionLizenzen.triggered.connect(self.open_licenses)
 
         self.table.itemChanged.connect(self.itemChanged)
+
+    def about(self):
+        dialog = About(self)
+        dialog.exec()
+
+    def open_licenses(self) -> None:
+        dialog = licenses.LicenseViewer(self)
+        dialog.setup_licenses()
+        dialog.exec()
 
     def undo(self):
         self.undos.append(deepcopy(self.list))
@@ -151,7 +171,10 @@ class Window(QMainWindow, Ui_MainWindow):
             )
             return
         tempfile.close()
-        webbrowser.WindowsDefault().open(tempfile.name)
+        try:
+            webbrowser.WindowsDefault().open(tempfile.name)
+        except Exception:
+            webbrowser.open(tempfile.name)
 
     def itemChanged(self, item: QTableWidgetItem):
         if REFRESHING_GOING_ON:
@@ -208,13 +231,16 @@ class Window(QMainWindow, Ui_MainWindow):
             self.refreshUi()
 
     def eventFilter(self, obj: QObject, event: QEvent):
-        if obj == self.title and event.type() == QEvent.MouseButtonDblClick:
+        if (
+            obj == self.title
+            and event.type() == QEvent.Type.MouseButtonDblClick
+        ):
             self.changeName()
         return False
 
     def wannaSaveMessageBox(self) -> int:
         messagebox = QMessageBox(self)
-        messagebox.setIcon(QMessageBox.Question)
+        messagebox.setIcon(QMessageBox.Icon.Question)
         messagebox.setWindowTitle("Änderungen speichern?")
         messagebox.setText(
             "Ihr Dokument enthält nicht gespeicherte Inhalte. "
@@ -297,7 +323,7 @@ class Window(QMainWindow, Ui_MainWindow):
         # HACK (False,) argument of the library ignored
         path = None if path is False else path
         if path is None:
-            path, _ = QFileDialog.getSaveFileName(
+            path, __ = QFileDialog.getSaveFileName(
                 self,
                 caption="Liste Speichern",
                 directory=os.path.expanduser("~/Documents/Urlaubslisten"),
@@ -328,7 +354,6 @@ class PreviewDialog(QDialog):
         super().__init__(parent)
         loadUi(Path(__file__).parent / "ui/preview.ui", self)
         self.setWindowTitle("Preview")
-        self.setWindowState(Qt.WindowMaximized)
         self.setWindowIcon(
             QIcon(str(Path(__file__).parent / "icons/appicon.png"))
         )
@@ -351,7 +376,10 @@ class PreviewDialog(QDialog):
             )
             return
         tempfile.close()
-        webbrowser.WindowsDefault().open(tempfile.name)
+        try:
+            webbrowser.WindowsDefault().open(tempfile.name)
+        except Exception:
+            webbrowser.open(tempfile.name)
         # XXX THE FOLLOWING WAS SUPPOSED TO WORK WELL, HOWEVER AT THE
         # XXX painter.drawImage() LINE THE PROG TERMINATES WITHOUT ERRORS.
         # XXX THAT's WHY WE ARE REDIRECTING TO WINDOWS DEFAULT NOW.
@@ -412,7 +440,7 @@ class PreviewDialog(QDialog):
                 self.table.setItem(y, x, tItem)
 
         header = self.table.horizontalHeader()
-        header.setSectionResizeMode(QHeaderView.Stretch)
+        header.setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
 
 
 class ItemEditor(QDialog):
@@ -491,8 +519,10 @@ class EditorDialog(QDialog):
             self.list.clear()
             for item in self.categories:
                 list_item = QListWidgetItem(item)
-                list_item.setFlags(list_item.flags() | Qt.ItemIsEditable)
-                list_item.setData(Qt.UserRole, item)
+                list_item.setFlags(
+                    list_item.flags() | Qt.ItemFlag.ItemIsEditable
+                )
+                list_item.setData(Qt.ItemDataRole.UserRole, item)
                 self.list.addItem(list_item)
                 self.originalNames[id(list_item)] = item
 
@@ -504,7 +534,7 @@ class EditorDialog(QDialog):
     def createCategory(self):
         item = QListWidgetItem()
         item.setText(f"Neue Kategorie {self.new_category_counter}")
-        item.setFlags(item.flags() | Qt.ItemIsEditable)
+        item.setFlags(item.flags() | Qt.ItemFlag.ItemIsEditable)
         self.originalNames[id(item)] = item.text()
         self.list.addItem(item)
         self.new_category_counter += 1
@@ -568,7 +598,30 @@ class ManageBaseList(QDialog):
         self.refreshUi()
 
 
+class About(QDialog):
+    def __init__(self, parent) -> None:
+        super().__init__(parent)
+        loadUi(Path(__file__).parent / "ui/about.ui", self)
+        self.setWindowTitle("Über Urlaubsliste")
+        self.setupUi(self)
+        self.connectSignalsSlots()
+
+    def setupUi(self, *args, **kwargs) -> None:
+        self.versionDisplay.setText(version_string)
+
+    def connectSignalsSlots(self) -> None:
+        def open_github():
+            try:
+                webbrowser.WindowsDefault().open(
+                    "https://github.com/TheCheese42/urlaubsliste"
+                )
+            except Exception:
+                webbrowser.open("https://github.com/TheCheese42/urlaubsliste")
+        self.openGithubBtn.clicked.connect(open_github)
+
+
 def main():
+    config.init_config({})
     if not (
         list_dir := Path(os.path.expanduser("~/Documents/Urlaubslisten"))
     ).exists():
@@ -576,14 +629,14 @@ def main():
     app = QApplication(sys.argv)
     app.setApplicationName("Urlaubsliste Deluxe")
     app.setFont(QFont("Calibri", 10))
-    locale = 'de_DE'
-    translator = QTranslator()
-    translator.load(
-        'qtbase_' + locale, QLibraryInfo.location(
-            QLibraryInfo.TranslationsPath
-        )
-    )
-    app.installTranslator(translator)
+    # locale = 'de_DE'
+    # translator = QTranslator()
+    # translator.load(
+    #     'qtbase_' + locale, QLibraryInfo.location(
+    #         QLibraryInfo.TranslationsPath
+    #     )
+    # )
+    # app.installTranslator(translator)
     win = Window()
     win.show()
     sys.exit(app.exec())
