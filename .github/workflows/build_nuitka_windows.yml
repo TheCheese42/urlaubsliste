@@ -1,0 +1,62 @@
+name: Build Urlaubsliste using Nuitka (Windows) + Windows Installer
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Check-out repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.1'
+          architecture: 'x64'
+          cache: 'pip'
+          cache-dependency-path: |
+            **/*requirements.txt
+
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt -r dev-requirements.txt
+      
+      - name: Compile Resources
+        run: |
+          pyqt-utils urlaubsliste --compile-ui --compile-icons
+
+      - name: Build Executable
+        run: |
+          ./build_windows.ps1
+
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: | 
+            9.x.x
+
+      - name: Build Windows Installer
+        run: dotnet build
+
+      - name: Finish Artifact Files
+        run: |
+          mv build/urlaubsliste.exe urlaubsliste-win64-portable.exe
+          mv bin/Debug/Urlaubsliste.msi urlaubsliste-win64.msi
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ runner.os }} Build
+          path: |
+            urlaubsliste-win64-portable.exe
+            urlaubsliste-win64.msi
+          include-hidden-files: true
