@@ -31,14 +31,18 @@ jobs:
           sudo apt update
           sudo apt install -y pyqt5-dev-tools qtchooser qttools5-dev-tools
           sudo apt install -y patchelf ccache
+          python -m venv .venv
+          source .venv/bin/activate
           pip install -r requirements.txt -r dev-requirements.txt
       
       - name: Compile Resources
         run: |
+          source .venv/bin/activate
           pyqt-utils urlaubsliste --compile-ui --compile-icons
 
       - name: Build Executable
         run: |
+          source .venv/bin/activate
           chmod +x ./build-linux.sh
           ./build-linux.sh
 

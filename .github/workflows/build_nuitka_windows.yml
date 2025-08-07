@@ -28,14 +28,18 @@ jobs:
 
       - name: Install Dependencies
         run: |
+          python -m venv .venv
+          ./.venv/Scripts/Activate.ps1
           pip install -r requirements.txt -r dev-requirements.txt
       
       - name: Compile Resources
         run: |
+          ./.venv/Scripts/Activate.ps1
           pyqt-utils urlaubsliste --compile-ui --compile-icons
 
       - name: Build Executable
         run: |
+          ./.venv/Scripts/Activate.ps1
           ./build_windows.ps1
 
       - name: Setup dotnet
