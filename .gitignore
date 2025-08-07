@@ -4,3 +4,5 @@ __main__.dist/
 __pycache__/
 urlaubsliste/ui/*.py
 urlaubsliste/icons/*.py
+build/
+nuitka-crash-report.xml
