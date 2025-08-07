@@ -1,37 +1,19 @@
-import sys
 import os
-from pathlib import Path
+import sys
 import webbrowser
+from copy import copy, deepcopy
+from pathlib import Path
 from tempfile import NamedTemporaryFile
-from copy import deepcopy, copy
-
-from PyQt5.QtWidgets import (
-    QApplication,
-    QDialog,
-    QMainWindow,
-    QFileDialog,
-    QTableWidgetItem,
-    QErrorMessage,
-    QListWidgetItem,
-    QMessageBox,
-    QHeaderView,
-)
-from PyQt5.QtGui import QFont, QIcon, QCloseEvent
-from PyQt5.uic import loadUi
-from PyQt5.QtCore import (
-    Qt,
-    QTranslator,
-    QLibraryInfo,
-    QEvent,
-    QObject,
-    QTimer,
-)
-
-from window_ui import Ui_MainWindow
 
 from model import List
+from PyQt6.QtCore import QEvent, QLibraryInfo, QObject, Qt, QTimer, QTranslator
+from PyQt6.QtGui import QCloseEvent, QFont, QIcon
+from PyQt6.QtWidgets import (QApplication, QDialog, QErrorMessage, QFileDialog,
+                             QHeaderView, QListWidgetItem, QMainWindow,
+                             QMessageBox, QTableWidgetItem)
+from PyQt6.uic import loadUi
 from utils import create_report
-
+from window_ui import Ui_MainWindow
 
 REFRESHING_GOING_ON = False
 
@@ -586,7 +568,7 @@ class ManageBaseList(QDialog):
         self.refreshUi()
 
 
-if __name__ == "__main__":
+def main():
     if not (
         list_dir := Path(os.path.expanduser("~/Documents/Urlaubslisten"))
     ).exists():
@@ -605,3 +587,7 @@ if __name__ == "__main__":
     win = Window()
     win.show()
     sys.exit(app.exec())
+
+
+if __name__ == "__main__":
+    main()

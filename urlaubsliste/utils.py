@@ -1,14 +1,9 @@
-from reportlab.lib.pagesizes import A4, landscape
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.enums import TA_CENTER
 from reportlab.lib.colors import black
-from reportlab.platypus import (
-    SimpleDocTemplate,
-    Spacer,
-    Paragraph,
-    Table,
-    TableStyle,
-)
+from reportlab.lib.enums import TA_CENTER
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
+from reportlab.platypus import (Paragraph, SimpleDocTemplate, Spacer, Table,
+                                TableStyle)
 
 
 def deep_merge(dict1: dict, dict2: dict):
